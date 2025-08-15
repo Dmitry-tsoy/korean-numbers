@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Числа на корейском</title>
+</head>
+<body>
+    <h1>Перевод чисел в корейский</h1>
+    <label for="numberInput">Введите число от 1 до 99:</label>
+    <input type="number" id="numberInput" min="1" max="99">
+    <button onclick="convertNumber()">Перевести</button>
+    <p id="result"></p>
+
+    <script>
+        const numbers_korean = ["하나", "둘", "셋", "넷", "다섯", "여섯", "일곱", "여덟", "아홉"];
+        const tens_korean = ["열", "스물", "서른", "마흔", "쉰", "예순", "일흔", "여든", "아흔"];
+
+        function convertNumber() {
+            const num = parseInt(document.getElementById("numberInput").value);
+            let result = "";
+
+            if (num < 10) {
+                result = numbers_korean[num - 1];
+            } else if (num % 10 === 0) {
+                result = tens_korean[num / 10 - 1];
+            } else {
+                const tens = Math.floor(num / 10);
+                const ones = num % 10;
+                result = tens_korean[tens - 1] + " " + numbers_korean[ones - 1];
+            }
+
+            document.getElementById("result").textContent = result;
+        }
+    </script>
+</body>
+</html>
