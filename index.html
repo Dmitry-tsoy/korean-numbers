@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Числа на корейском</title>
+</head>
+<body>
+    <h1>Конвертер чисел в корейский</h1>
+    <input type="number" id="numberInput" placeholder="Введите число">
+    <button onclick="convertToKorean()">Показать</button>
+    <p id="result"></p>
+
+    <script>
+        function convertToKorean() {
+            let n = parseInt(document.getElementById('numberInput').value);
+            let units = ["", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구"];
+            let tens = ["", "십", "이십", "삼십", "사십", "오십", "육십", "칠십", "팔십", "구십"];
+
+            let result = "";
+            if (n < 10) {
+                result = units[n];
+            } else if (n < 100) {
+                result = tens[Math.floor(n / 10)] + units[n % 10];
+            } else {
+                result = "Пока что поддерживаются числа до 99";
+            }
+            document.getElementById('result').innerText = result;
+        }
+    </script>
+</body>
+</html>
