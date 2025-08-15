@@ -7,59 +7,119 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 20px;
             text-align: center;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            max-width: 90%;
-            width: 350px;
         }
         h1 {
             font-size: 1.5rem;
         }
         input {
             padding: 10px;
-            width: 100%;
-            margin-top: 10px;
             font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+            width: 200px;
         }
         button {
             margin-top: 15px;
             padding: 10px;
             font-size: 1rem;
             cursor: pointer;
-            width: 100%;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        button:hover {
-            background: #45a049;
+            width: 200px;
+            border: 1px solid #000;
+            background: none;
         }
         .result {
             margin-top: 15px;
             font-size: 1.2rem;
         }
+        .hints {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .hints-table {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            text-align: left;
+        }
+        td, th {
+            padding: 2px 5px;
+        }
+        #hintsContent {
+            display: none;
+        }
+
+        /* Адаптив для мобильных */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            input, button {
+                width: 150px;
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            .result {
+                font-size: 1rem;
+            }
+            .hints-table {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 id="question"></h1>
-        <input type="text" id="answer" placeholder="Введите число на корейском">
-        <button id="checkBtn">Проверить</button>
-        <div class="result" id="result"></div>
-        <button id="retryBtn" style="display:none;">Повторить</button>
+    <h1>Угадай число на корейском</h1>
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Введите число на корейском">
+    <button id="checkBtn">Проверить</button>
+    <div class="result" id="result"></div>
+    <button id="retryBtn" style="display:none;">Повторить</button>
+
+    <div class="hints">
+        <button id="toggleHintsBtn">Показать/Скрыть подсказки</button>
+        <div id="hintsContent" class="hints-table">
+            <table>
+                <thead><tr><th>Единицы</th><th>Корейский</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>하나</td></tr>
+                    <tr><td>2</td><td>둘</td></tr>
+                    <tr><td>3</td><td>셋</td></tr>
+                    <tr><td>4</td><td>넷</td></tr>
+                    <tr><td>5</td><td>다섯</td></tr>
+                    <tr><td>6</td><td>여섯</td></tr>
+                    <tr><td>7</td><td>일곱</td></tr>
+                    <tr><td>8</td><td>여덟</td></tr>
+                    <tr><td>9</td><td>아홉</td></tr>
+                </tbody>
+            </table>
+
+            <table>
+                <thead><tr><th>Десятки</th><th>Корейский</th></tr></thead>
+                <tbody>
+                    <tr><td>10</td><td>열</td></tr>
+                    <tr><td>20</td><td>스물</td></tr>
+                    <tr><td>30</td><td>서른</td></tr>
+                    <tr><td>40</td><td>마흔</td></tr>
+                    <tr><td>50</td><td>쉰</td></tr>
+                    <tr><td>60</td><td>예순</td></tr>
+                    <tr><td>70</td><td>일흔</td></tr>
+                    <tr><td>80</td><td>여든</td></tr>
+                    <tr><td>90</td><td>아흔</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -100,6 +160,11 @@
         });
 
         document.getElementById("retryBtn").addEventListener("click", startQuiz);
+
+        document.getElementById("toggleHintsBtn").addEventListener("click", () => {
+            const hints = document.getElementById("hintsContent");
+            hints.style.display = hints.style.display === "none" ? "flex" : "none";
+        });
 
         startQuiz();
     </script>
