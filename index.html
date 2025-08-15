@@ -1,172 +1,211 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Korean Numbers Quiz</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            margin: 20px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 1.5rem;
-        }
-        input {
-            padding: 10px;
-            font-size: 1rem;
-            text-align: center;
-            margin-top: 10px;
-            width: 200px;
-        }
-        button {
-            margin-top: 15px;
-            padding: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 200px;
-            border: 1px solid #000;
-            background: none;
-        }
-        .result {
-            margin-top: 15px;
-            font-size: 1.2rem;
-        }
-        .hints {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .hints-table {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 10px;
-        }
-        table {
-            border-collapse: collapse;
-            text-align: left;
-        }
-        td, th {
-            padding: 2px 5px;
-        }
-        #hintsContent {
-            display: none;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Korean Numbers Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        background-color: #ffffff;
+        color: #0B1F47;
+        text-align: center;
+    }
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    #question {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+    input {
+        padding: 12px;
+        font-size: 1rem;
+        text-align: center;
+        width: 220px;
+        border: 2px solid #0B1F47;
+        border-radius: 6px;
+        margin-top: 10px;
+        outline: none;
+    }
+    input:focus {
+        border-color: #A6D8FF;
+        box-shadow: 0 0 5px #A6D8FF;
+    }
+    button {
+        margin-top: 15px;
+        padding: 12px;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 220px;
+        border: none;
+        border-radius: 6px;
+        background-color: #0B1F47;
+        color: white;
+        font-weight: 600;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #A6D8FF;
+        color: #0B1F47;
+    }
+    .result {
+        margin-top: 15px;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    .hints {
+        margin-top: 20px;
+        font-weight: 600;
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        font-size: 1rem;
+        color: #0B1F47;
+    }
+    .hints span {
+        margin-left: 5px;
+        transition: transform 0.3s;
+    }
+    .hints-content {
+        display: none;
+        margin-top: 10px;
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    table {
+        border-collapse: collapse;
+    }
+    td {
+        padding: 3px 6px;
+    }
 
-        /* Адаптив для мобильных */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.2rem;
-            }
-            input, button {
-                width: 150px;
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-            .result {
-                font-size: 1rem;
-            }
-            .hints-table {
-                flex-direction: column;
-                gap: 20px;
-            }
-        }
-    </style>
+    /* Адаптив */
+    @media (max-width: 480px) {
+        h1 { font-size: 1.5rem; }
+        input, button { width: 160px; font-size: 0.9rem; padding: 10px; }
+        .hints-content { flex-direction: column; gap: 15px; }
+    }
+</style>
 </head>
 <body>
-    <h1>Угадай число на корейском</h1>
-    <p id="question"></p>
-    <input type="text" id="answer" placeholder="Введите число на корейском">
-    <button id="checkBtn">Проверить</button>
-    <div class="result" id="result"></div>
-    <button id="retryBtn" style="display:none;">Повторить</button>
+<h1>Угадай число на корейском</h1>
+<p id="question"></p>
+<input type="text" id="answer" placeholder="Введите число на корейском">
+<button id="checkBtn">Проверить</button>
+<div class="result" id="result"></div>
+<button id="retryBtn" style="display:none;">Повторить</button>
 
-    <div class="hints">
-        <button id="toggleHintsBtn">Показать/Скрыть подсказки</button>
-        <div id="hintsContent" class="hints-table">
-            <table>
-                <thead><tr><th>Единицы</th><th>Корейский</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>하나</td></tr>
-                    <tr><td>2</td><td>둘</td></tr>
-                    <tr><td>3</td><td>셋</td></tr>
-                    <tr><td>4</td><td>넷</td></tr>
-                    <tr><td>5</td><td>다섯</td></tr>
-                    <tr><td>6</td><td>여섯</td></tr>
-                    <tr><td>7</td><td>일곱</td></tr>
-                    <tr><td>8</td><td>여덟</td></tr>
-                    <tr><td>9</td><td>아홉</td></tr>
-                </tbody>
-            </table>
+<div class="hints" id="toggleHintsBtn">
+    Подсказки <span id="chevron">▼</span>
+</div>
+<div class="hints-content" id="hintsContent">
+    <table>
+        <tbody>
+            <tr><td>1 - 하나</td></tr>
+            <tr><td>2 - 둘</td></tr>
+            <tr><td>3 - 셋</td></tr>
+            <tr><td>4 - 넷</td></tr>
+            <tr><td>5 - 다섯</td></tr>
+            <tr><td>6 - 여섯</td></tr>
+            <tr><td>7 - 일곱</td></tr>
+            <tr><td>8 - 여덟</td></tr>
+            <tr><td>9 - 아홉</td></tr>
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+            <tr><td>10 - 열</td></tr>
+            <tr><td>20 - 스물</td></tr>
+            <tr><td>30 - 서른</td></tr>
+            <tr><td>40 - 마흔</td></tr>
+            <tr><td>50 - 쉰</td></tr>
+            <tr><td>60 - 예순</td></tr>
+            <tr><td>70 - 일흔</td></tr>
+            <tr><td>80 - 여든</td></tr>
+            <tr><td>90 - 아흔</td></tr>
+        </tbody>
+    </table>
+</div>
 
-            <table>
-                <thead><tr><th>Десятки</th><th>Корейский</th></tr></thead>
-                <tbody>
-                    <tr><td>10</td><td>열</td></tr>
-                    <tr><td>20</td><td>스물</td></tr>
-                    <tr><td>30</td><td>서른</td></tr>
-                    <tr><td>40</td><td>마흔</td></tr>
-                    <tr><td>50</td><td>쉰</td></tr>
-                    <tr><td>60</td><td>예순</td></tr>
-                    <tr><td>70</td><td>일흔</td></tr>
-                    <tr><td>80</td><td>여든</td></tr>
-                    <tr><td>90</td><td>아흔</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<script>
+const koreanNumbers = {
+    1:"하나",2:"둘",3:"셋",4:"넷",5:"다섯",6:"여섯",7:"일곱",8:"여덟",9:"아홉",10:"열",
+    11:"열하나",12:"열둘",13:"열셋",14:"열넷",15:"열다섯",16:"열여섯",17:"열일곱",18:"열여덟",19:"열아홉",20:"스물",
+    21:"스물하나",22:"스물둘",23:"스물셋",24:"스물넷",25:"스물다섯",26:"스물여섯",27:"스물일곱",28:"스물여덟",29:"스물아홉",30:"서른",
+    31:"서른하나",32:"서른둘",33:"서른셋",34:"서른넷",35:"서른다섯",36:"서른여섯",37:"서른일곱",38:"서른여덟",39:"서른아홉",40:"마흔",
+    41:"마흔하나",42:"마흔둘",43:"마흔셋",44:"마흔넷",45:"마흔다섯",46:"마흔여섯",47:"마흔일곱",48:"마흔여덟",49:"마흔아홉",50:"쉰",
+    51:"쉰하나",52:"쉰둘",53:"쉰셋",54:"쉰넷",55:"쉰다섯",56:"쉰여섯",57:"쉰일곱",58:"쉰여덟",59:"쉰아홉",60:"예순",
+    61:"예순하나",62:"예순둘",63:"예순셋",64:"예순넷",65:"예순다섯",66:"예순여섯",67:"예순일곱",68:"예순여덟",69:"예순아홉",70:"일흔",
+    71:"일흔하나",72:"일흔둘",73:"일흔셋",74:"일흔넷",75:"일흔다섯",76:"일흔여섯",77:"일흔일곱",78:"일흔여덟",79:"일흔아홉",80:"여든",
+    81:"여든하나",82:"여든둘",83:"여든셋",84:"여든넷",85:"여든다섯",86:"여든여섯",87:"여든일곱",88:"여든여덟",89:"여든아홉",90:"아흔",
+    91:"아흔하나",92:"아흔둘",93:"아흔셋",94:"아흔넷",95:"아흔다섯",96:"아흔여섯",97:"아흔일곱",98:"아흔여덟",99:"아흔아홉"
+};
 
-    <script>
-        const koreanNumbers = {
-            1: "하나", 2: "둘", 3: "셋", 4: "넷", 5: "다섯", 6: "여섯", 7: "일곱", 8: "여덟", 9: "아홉", 10: "열",
-            11: "열하나", 12: "열둘", 13: "열셋", 14: "열넷", 15: "열다섯", 16: "열여섯", 17: "열일곱", 18: "열여덟", 19: "열아홉", 20: "스물",
-            21: "스물하나", 22: "스물둘", 23: "스물셋", 24: "스물넷", 25: "스물다섯", 26: "스물여섯", 27: "스물일곱", 28: "스물여덟", 29: "스물아홉", 30: "서른",
-            31: "서른하나", 32: "서른둘", 33: "서른셋", 34: "서른넷", 35: "서른다섯", 36: "서른여섯", 37: "서른일곱", 38: "서른여덟", 39: "서른아홉", 40: "마흔",
-            41: "마흔하나", 42: "마흔둘", 43: "마흔셋", 44: "마흔넷", 45: "마흔다섯", 46: "마흔여섯", 47: "마흔일곱", 48: "마흔여덟", 49: "마흔아홉", 50: "쉰",
-            51: "쉰하나", 52: "쉰둘", 53: "쉰셋", 54: "쉰넷", 55: "쉰다섯", 56: "쉰여섯", 57: "쉰일곱", 58: "쉰여덟", 59: "쉰아홉", 60: "예순",
-            61: "예순하나", 62: "예순둘", 63: "예순셋", 64: "예순넷", 65: "예순다섯", 66: "예순여섯", 67: "예순일곱", 68: "예순여덟", 69: "예순아홉", 70: "일흔",
-            71: "일흔하나", 72: "일흔둘", 73: "일흔셋", 74: "일흔넷", 75: "일흔다섯", 76: "일흔여섯", 77: "일흔일곱", 78: "일흔여덟", 79: "일흔아홉", 80: "여든",
-            81: "여든하나", 82: "여든둘", 83: "여든셋", 84: "여든넷", 85: "여든다섯", 86: "여든여섯", 87: "여든일곱", 88: "여든여덟", 89: "여든아홉", 90: "아흔",
-            91: "아흔하나", 92: "아흔둘", 93: "아흔셋", 94: "아흔넷", 95: "아흔다섯", 96: "아흔여섯", 97: "아흔일곱", 98: "아흔여덟", 99: "아흔아홉"
-        };
+let currentNumber;
 
-        let currentNumber;
+function startQuiz(){
+    currentNumber = Math.floor(Math.random()*99)+1;
+    document.getElementById("question").textContent = `Как по-корейски будет число: ${currentNumber}?`;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").textContent = "";
+    document.getElementById("retryBtn").style.display="none";
+    document.getElementById("checkBtn").style.display="block";
+}
 
-        function startQuiz() {
-            currentNumber = Math.floor(Math.random() * 99) + 1;
-            document.getElementById("question").textContent = `Как по-корейски будет число: ${currentNumber}?`;
-            document.getElementById("answer").value = "";
-            document.getElementById("result").textContent = "";
-            document.getElementById("retryBtn").style.display = "none";
-            document.getElementById("checkBtn").style.display = "block";
-        }
+function speakKorean(text) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        const koreanVoice = voices.find(v => v.lang.startsWith('ko')) || voices[0];
+        utterance.voice = koreanVoice;
+        utterance.lang = 'ko-KR';
+        window.speechSynthesis.speak(utterance);
+    } else {
+        console.log("Ваш браузер не поддерживает озвучивание.");
+    }
+}
 
-        document.getElementById("checkBtn").addEventListener("click", () => {
-            const userAnswer = document.getElementById("answer").value.trim();
-            const correctAnswer = koreanNumbers[currentNumber];
-            if (userAnswer === correctAnswer) {
-                document.getElementById("result").textContent = "✅ Правильно! Молодец!";
-            } else {
-                document.getElementById("result").textContent = `❌ Неправильно. Правильный ответ: ${correctAnswer}`;
-            }
-            document.getElementById("checkBtn").style.display = "none";
-            document.getElementById("retryBtn").style.display = "block";
-        });
+document.getElementById("checkBtn").addEventListener("click", ()=>{
+    const userAnswer = document.getElementById("answer").value.trim();
+    const correctAnswer = koreanNumbers[currentNumber];
+    if(userAnswer === correctAnswer){
+        document.getElementById("result").textContent = "✅ Правильно! Молодец!";
+    } else {
+        document.getElementById("result").textContent = `❌ Неправильно. Правильный ответ: ${correctAnswer}`;
+    }
+    speakKorean(correctAnswer);
+    document.getElementById("checkBtn").style.display="none";
+    document.getElementById("retryBtn").style.display="block";
+});
 
-        document.getElementById("retryBtn").addEventListener("click", startQuiz);
+document.getElementById("retryBtn").addEventListener("click", startQuiz);
 
-        document.getElementById("toggleHintsBtn").addEventListener("click", () => {
-            const hints = document.getElementById("hintsContent");
-            hints.style.display = hints.style.display === "none" ? "flex" : "none";
-        });
+document.getElementById("toggleHintsBtn").addEventListener("click", ()=>{
+    const content = document.getElementById("hintsContent");
+    const chevron = document.getElementById("chevron");
+    if(content.style.display === "none" || content.style.display === ""){
+        content.style.display = "flex";
+        chevron.textContent = "▲";
+    } else {
+        content.style.display = "none";
+        chevron.textContent = "▼";
+    }
+});
 
-        startQuiz();
-    </script>
+startQuiz();
+</script>
 </body>
 </html>
